@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="esES">
+<head>
+	<meta charset="UTF-8">
+	<title>TITLE</title>
+	<!-- <link rel="stylesheet" href="CSS"> -->
+	<!-- <script src="SCRIPT.js"></script> -->
+	<style>
+		.list {
+			/*display: flex;
+			flex-direction: row;*/
+			border: 1px solid cyan;
+		}
+	</style>
+</head>
+<body>
+	<header>Spotify JSON</header>
+	
+	<div class="container">
+		<div style="border: 1px solid black;">
+			<div class="container">
+				<label for="artistName">Name</label>
+				<input type="text" placeholder="artist name..." id="artistName">
+				<button id="bArtists">Search artist</button>
+			</div>
+		</div>
+		<div style="display: flex; flex-direction: row;">
+			<div class="artistList list">
+				<select name="selArtists" id="selArtists"></select>
+				<button id="bAlbums">Search albums</button>
+			</div>
+			</div>
+			<div class="albumList list">
+				<select name="selAlbums" id="selAlbums"></select>
+				<button id="bSongs">Search songs</button>
+			</div>
+			<div class="songList list">
+				<select name="selSongs" id="selSongs"></select>
+				<button id="bPlay">Play!!!</button>
+			</div>
+	</div>
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<script>
+		$('#bArtists').on("click", function() {
+			console.log("Boton pulsado");
+			$.ajax({
+				url: "https://api.spotify.com/v1/search?type=artist&query=" + $('#artistName').val()
+			})
+			.done( function ( artists ){
+				// console.log(artists);
+				var resultHtml="";
+				$.each( artists.artists.items, function ( index, oArtists ){
+					console.log("Artist name: " + oArtists.name);
+					resultHtml += '<option value="' + oArtists.id +'">' + oArtists.name + '</option>'
+				} )
+				$('.artistList > select').html(resultHtml);
+			})
+
+
+		})
+		
+		$('#bAlbums').on("click", function(){
+			// console.log("Boton albumes pulsado");
+			$.ajax({
+				url: "https://api.spotify.com/v1/artists/" + $('.artistList > select').val() +"/albums" 
+			})
+			.done( function ( albums ){
+				// console.log(artists);
+				var resultHtml="";
+				$.each( albums.items, function ( index, oAlbums ){
+					// console.log("Album name: " + oAlbums.id + " " + oAlbums.name);
+					resultHtml += '<option value="' + oAlbums.id +'">' + oAlbums.name + '</option>'
+				} )
+				// console.log($('.albumList > select').html());
+				$('.albumList > select').html(resultHtml);
+				// console.log($('.albumList > select').html());
+			})
+
+		})
+
+		$('#bSongs').on("click", function(){
+			// console.log("Pulsado boton Songs");
+			$.ajax({
+				url: "https://api.spotify.com/v1/albums/" + $('.albumList > select').val() +"/tracks" 
+			})
+			.done( function ( songs ){
+				var resultHtml = "";
+				$.each( songs.items, function ( index, oSong ){
+					// console.log("Song: " + oSong.name);
+					resultHtml += '<option value="' + oSong.preview_url +'" idSong="' + oSong.preview_url + '">' + oSong.name + '</option>'
+				})
+				$('.songList > select').html(resultHtml);
+			})
+
+		})
+
+		$('#bPlay').on("click", function() {
+			console.log($('#selSongs').val());
+			if (audio){audio.stop();}
+			var audio = new Audio($('#selSongs').val());
+			audio.play();
+		})
+	</script>
+
+</body>
+</html>
+
+
+
+
+
+<!-- dataType: "json"
+    https://api.spotify.com/v1/search?type=artist&query=<ARTIST-NAME>
+    https://api.spotify.com/v1/artists/<ID-ARTIST>/albums
+    https://api.spotify.com/v1/albums/<ID-ALBUM>/tracks 
+
+    Preview URL: 
+.items.previewurl
+    https://p.scdn.co/mp3-preview/5ebde4db79331c5cb0f98bfc60bfb311b9d165de-->
+
+
+
+
+
+
+
+
+
+
+

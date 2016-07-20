@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="esES">
+<head>
+	<meta charset="UTF-8">
+	<title>TITLE</title>
+	<!-- <link rel="stylesheet" href="CSS"> -->
+	<!-- <script src="SCRIPT.js"></script> -->
+	<style>
+		.list {
+			/*display: flex;
+			flex-direction: row;*/
+			border: 1px solid cyan;
+		}
+		select {
+			width: 300px;
+		}
+	</style>
+</head>
+<body>
+	<header>Spotify JSON</header>
+	
+	<div class="container">
+		<div style="border: 1px solid black;">
+			<div class="container">
+				<label for="artistName">Name</label>
+				<input type="text" placeholder="artist name..." id="artistName">
+				<button id="bArtists">Search artist</button>
+			</div>
+		</div>
+		<div style="display: flex; flex-direction: row;">
+			<div class="artistList list">
+				<select name="selArtists" id="selArtists"></select>
+				<button id="bAlbums">Search albums</button>
+			</div>
+			</div>
+			<div class="albumList list">
+				<select name="selAlbums" id="selAlbums" albumimage=""></select>
+				<button id="bSongs">Search songs</button>
+			</div>
+			<div class="songList list">
+				<img src="" width="100px;" hidden="true"/>
+				<select name="selSongs" id="selSongs"></select>
+				<button id="bPlay">Play!!!</button>
+			</div>
+	</div>
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<script src="main.js"></script>
+	<script src="artists.js"></script>
+	<script src="albums.js"></script>
+	<script src="songs.js"></script>
+	<script src="play.js"></script>
+	<script>
+		
+
+		$('#bArtists').on("click", function( event ) {
+			event.preventDefault();
+			getArtists();
+		});
+		
+		$('#selAlbums').on("change", function(){
+			console.log("Album changed!");
+			emptySong();
+			putAlbumImg();
+		});
+
+		$('#bAlbums').on("click", function( event ){
+			event.preventDefault();
+			getAlbums();			
+		});
+
+		$('#bSongs').on("click", function( event ){
+			event.preventDefault();
+			getSongs();
+		});
+
+		$('#bPlay').on("click", function( event) {
+			event.preventDefault();
+			reprod();
+		});
+	</script>
+
+</body>
+</html>
+
+
+
+
+
+<!-- dataType: "json"
+    https://api.spotify.com/v1/search?type=artist&query=<ARTIST-NAME>
+    https://api.spotify.com/v1/artists/<ID-ARTIST>/albums
+    https://api.spotify.com/v1/albums/<ID-ALBUM>/tracks 
+
+    Preview URL: 
+.items.previewurl
+    https://p.scdn.co/mp3-preview/5ebde4db79331c5cb0f98bfc60bfb311b9d165de-->
+
+
+
+
+
+
+
+
+
+
+
